@@ -1,0 +1,35 @@
+[user]
+	name = Robert Poole
+	email = robert.daniel.poole@gmail.com
+[core]
+	excludesfile = /home/rob/.gitignore
+	editor = nvim
+	pager = diff-so-fancy | less --tabs=1,5 -RF
+[merge]
+	tool = nvimdiff
+[alias]
+	visual = gitk
+	lg= log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	st= status -sb
+	br= branch
+	ch= checkout
+	cm= commit
+	incoming= log ..origin/master
+	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    un = ls-files --others --exclude-standard
+	change-commits = "!f() { VAR=$1; OLD=$2; NEW=$3; shift 3; git filter-branch --env-filter \"if [[ \\\"$`echo $VAR`\\\" = '$OLD' ]]; then export $VAR='$NEW'; fi\" $@; }; f"
+[web]
+	browser = google-chrome
+[help]
+	autocorrect = 1
+
+[branch "master"]
+	mergeoptions = --no-ff
+[push]
+	default = simple
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
