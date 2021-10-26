@@ -6,3 +6,5 @@ StringLiterals:
   Enabled: false
 NumericLiterals:
   Enabled: false
+AllCops:
+  TargetRubyVersion: 3.0
