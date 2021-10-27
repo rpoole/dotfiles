@@ -8,3 +8,5 @@ NumericLiterals:
   Enabled: false
 AllCops:
   TargetRubyVersion: 3.0
+Metrics/ClassLength:
+  Enabled: false
