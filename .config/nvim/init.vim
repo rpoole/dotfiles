@@ -58,10 +58,10 @@ nnoremap <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <leader>f <cmd>lua vim.lsp.buf.formatting()<CR>
 
 " auto-format
-autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
-autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 100)
-autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
-autocmd BufWritePre *.rb lua vim.lsp.buf.formatting_sync(nil, 100)
+"autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
+"autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 100)
+"autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
+"autocmd BufWritePre *.rb lua vim.lsp.buf.formatting_sync(nil, 100)
 
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 
