@@ -4,7 +4,7 @@
 [core]
 	excludesfile = /home/rob/.gitignore
 	editor = nvim
-	pager = diff-so-fancy | less --tabs=1,5 -RF
+	pager = diff-so-fancy | less --tabs=4 -RFX
 [merge]
 	tool = nvimdiff
 [alias]
@@ -33,3 +33,5 @@
 	oldHighlight = red bold 52
 	newNormal = green bold
 	newHighlight = green bold 22
+[interactive]
+	diffFilter = diff-so-fancy --patch
