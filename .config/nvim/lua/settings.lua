@@ -53,6 +53,12 @@ vim.api.nvim_set_keymap('n', '<leader>x', ':x<CR>', { noremap = true, silent = t
 vim.api.nvim_set_keymap('n', '<C-f>', '10k', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<C-b>', '10j', { noremap = true, silent = true })
 
+-- LSP config
+vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>r', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>i', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
+
 -- Keep cursor away from edges of the screen
 vim.opt.scrolloff = 14
 
@@ -90,3 +96,9 @@ vim.g.clipboard = {
     cache_enabled = true,
 }
 vim.opt.clipboard = "unnamedplus"
+
+-- Close quickfix window after selection
+vim.api.nvim_create_autocmd( "FileType", {
+    pattern={"qf"},
+    command=[[nnoremap <buffer> <CR> <CR>:cclose<CR>]]
+})
