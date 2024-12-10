@@ -8,6 +8,7 @@ return {
       { "<C-p>", function() require("telescope.builtin").find_files() end, desc="Find Files" },
       { "<C-k>", function() require("telescope.builtin").live_grep() end, desc="Live Grep" },
       { "<C-n>", function() require'telescope.builtin'.lsp_references() end, desc="References" },
+      { "<C-m>", function() require'telescope.builtin'.lsp_document_symbols() end, desc="Symbols" },
     },
     config = function()
       local actions = require('telescope.actions')

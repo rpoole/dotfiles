@@ -1,3 +1,5 @@
+local is_mac = vim.loop.os_uname().sysname == "Darwin"
+
 -- Set mapleader
 vim.g.mapleader = ","
 
@@ -55,9 +57,11 @@ vim.api.nvim_set_keymap('n', '<C-b>', '10j', { noremap = true, silent = true })
 
 -- LSP config
 vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>n', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>r', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>i', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.format()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.format({timeout_ms = 50000})<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>g', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true, silent = true })
 
 -- Keep cursor away from edges of the screen
 vim.opt.scrolloff = 14
@@ -82,19 +86,22 @@ vim.api.nvim_create_autocmd(
     }
 )
 
--- WSL clipboard
-vim.g.clipboard = {
-    name = "win32yank-wsl",
-    copy = {
-        ["+"] = "win32yank.exe -i --crlf",
-        ["*"] = "win32yank.exe -i --crlf",
-    },
-    paste = {
-        ["+"] = "win32yank.exe -o --lf",
-        ["*"] = "win32yank.exe -o --lf",
-    },
-    cache_enabled = true,
-}
+if not is_mac then
+    -- WSL clipboard
+    vim.g.clipboard = {
+        name = "win32yank-wsl",
+        copy = {
+            ["+"] = "win32yank.exe -i --crlf",
+            ["*"] = "win32yank.exe -i --crlf",
+        },
+        paste = {
+            ["+"] = "win32yank.exe -o --lf",
+            ["*"] = "win32yank.exe -o --lf",
+        },
+        cache_enabled = true,
+    }
+end
+
 vim.opt.clipboard = "unnamedplus"
 
 -- Close quickfix window after selection
