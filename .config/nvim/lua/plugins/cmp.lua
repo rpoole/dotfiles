@@ -11,7 +11,7 @@ return {
         cmp.setup({
             mapping = cmp.mapping.preset.insert({
                 ["<esc>"] = cmp.mapping.abort(),
-                ["<CR>"] = cmp.mapping.confirm({ select = true }),
+                ["<CR>"] = cmp.mapping.confirm({ select = false }),
                 ["<tab>"] = cmp.mapping.select_next_item(),
                 ["<s-tab>"] = cmp.mapping.select_prev_item(),
             }),

@@ -35,5 +35,8 @@ return {
 
       require'lspconfig'.ruby_lsp.setup{}
       require'lspconfig'.rubocop.setup{}
+
+      require'lspconfig'.ts_ls.setup{}
+      require'lspconfig'.eslint.setup{}
   end
 }

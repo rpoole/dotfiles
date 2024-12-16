@@ -109,3 +109,12 @@ vim.api.nvim_create_autocmd( "FileType", {
     pattern={"qf"},
     command=[[nnoremap <buffer> <CR> <CR>:cclose<CR>]]
 })
+
+
+-- Set up an autocmd for Ruby filetypes
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "ruby",
+  callback = function()
+    vim.keymap.set('n', '<C-g>', "$ogem 'pry'<CR>gem 'pry-rails'<CR>gem 'pry-nav'<esc>", { buffer = true, noremap = true, silent = true })
+  end,
+})
