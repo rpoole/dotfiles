@@ -70,6 +70,8 @@ vim.opt.scrolloff = 14
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+vim.lsp.set_log_level('debug')
+
 -- Reload last cursor position
 local lastplace = vim.api.nvim_create_augroup("LastPlace", {})
 vim.api.nvim_clear_autocmds({group = lastplace})
@@ -118,3 +120,27 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set('n', '<C-g>', "$ogem 'pry'<CR>gem 'pry-rails'<CR>gem 'pry-nav'<esc>", { buffer = true, noremap = true, silent = true })
   end,
 })
+
+-- work specific config
+if vim.env.DEV_ENV_TYPE == "WORK" then
+    -- run tests in tmux window 3
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = "ruby",
+        callback = function()
+            vim.keymap.set("n", "<leader>o", function()
+                local file = vim.fn.expand("%")
+                if file == "" then
+                    print("No file found in buffer")
+                    return
+                end
+
+                local cmd = string.format(
+                    "tmux send-keys -t 3 'dl bundle exec spring rspec %s --tag focus' C-m",
+                    vim.fn.shellescape(file)
+                )
+                vim.fn.system(cmd)
+                print("Sent to tmux window 3: " .. file)
+            end, { buffer = true, desc = "Run RSpec file in tmux window 3", noremap = true, silent = true })
+        end,
+    })
+end

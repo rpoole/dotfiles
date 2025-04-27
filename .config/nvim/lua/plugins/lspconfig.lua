@@ -18,7 +18,6 @@ return {
           "signatureHelp",
           "rename",
           "publishDiagnostics",
-          --"formatting",
       }
 
       configs.ruby_lsp = {
