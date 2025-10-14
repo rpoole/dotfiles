@@ -8,7 +8,7 @@ return {
             ensure_installed = { "ruby", "javascript", "typescript", "tsx" },
             sync_install = false,
             highlight = { enable = true },
-            indent = { enable = true, disable = { "ruby", "javascript", "typescript", "txt" } },
+            indent = { enable = true, disable = { "javascript", "typescript", "txt" } },
         })
     end
 }

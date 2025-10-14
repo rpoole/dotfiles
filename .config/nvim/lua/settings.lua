@@ -40,8 +40,9 @@ vim.api.nvim_set_keymap('n', 'k', 'gk', { noremap = true, silent = true })
 -- Buffer movement mappings
 vim.api.nvim_set_keymap('n', '<leader>bb', '<C-^>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>bd', ':bd<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-h>', ':bp<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-l>', ':bn<CR>', { noremap = true, silent = true })
+-- turn these back on if you drop bufferline
+-- vim.api.nvim_set_keymap('n', '<C-h>', ':bp<CR>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', '<C-l>', ':bn<CR>', { noremap = true, silent = true })
 
 -- Window manipulation mappings
 vim.api.nvim_set_keymap('n', '<leader>w', '<C-w>v<C-w>l', { noremap = true, silent = true })
@@ -69,8 +70,6 @@ vim.opt.scrolloff = 14
 -- Hybrid line numbers (absolute + relative)
 vim.opt.number = true
 vim.opt.relativenumber = true
-
-vim.lsp.set_log_level('debug')
 
 -- Reload last cursor position
 local lastplace = vim.api.nvim_create_augroup("LastPlace", {})
@@ -123,10 +122,11 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- work specific config
 if vim.env.DEV_ENV_TYPE == "WORK" then
-    -- run tests in tmux window 3
     vim.api.nvim_create_autocmd("FileType", {
-        pattern = "ruby",
-        callback = function()
+        pattern = { "ruby", "typescriptreact" },
+        callback = function(args)
+            local ft = args.match
+
             vim.keymap.set("n", "<leader>o", function()
                 local file = vim.fn.expand("%")
                 if file == "" then
@@ -134,13 +134,37 @@ if vim.env.DEV_ENV_TYPE == "WORK" then
                     return
                 end
 
+                escaped_file = vim.fn.shellescape(file)
+
+                local ft_cmd
+                if ft == "ruby" then
+                    ft_cmd = string.format("rspec %s --tag focus", escaped_file)
+                elseif ft == "typescriptreact" then
+                    ft_cmd = string.format("npm run-script test:jest %s", escaped_file)
+                end
+
                 local cmd = string.format(
-                    "tmux send-keys -t 3 'dl bundle exec spring rspec %s --tag focus' C-m",
-                    vim.fn.shellescape(file)
+                    "tmux send-keys -t 3 'dc run --rm web %s' C-m",
+                    ft_cmd
                 )
                 vim.fn.system(cmd)
                 print("Sent to tmux window 3: " .. file)
-            end, { buffer = true, desc = "Run RSpec file in tmux window 3", noremap = true, silent = true })
+            end, { buffer = true, desc = "Run test in tmux window 3", noremap = true, silent = true })
         end,
     })
 end
+
+-- not sure why these aren't the defaults
+vim.diagnostic.config({
+    virtual_text = true,      -- Show text inline
+    signs = true,             -- Show signs in the sign column (like "W")
+    underline = true,         -- Underline offending code
+    update_in_insert = false, -- Don't update while typing
+    severity_sort = true,     -- Show errors above warnings
+})
+
+-- don't want the mouse and it interferes with tmux
+vim.opt.mouse = ""
+
+local palette = require("personal.command_palette")
+vim.keymap.set("n", "<leader>;", palette.open, { desc = "Personal Command Palette" })

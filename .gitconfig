@@ -7,6 +7,7 @@
 	pager = diff-so-fancy | less --tabs=1,5 -RF
 [merge]
 	tool = nvimdiff
+    conflictStyle = diff3
 [alias]
 	visual = gitk
 	lg= log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
@@ -33,3 +34,9 @@
 	oldHighlight = red bold 52
 	newNormal = green bold
 	newHighlight = green bold 22
+[interactive]
+	diffFilter = diff-so-fancy --patch
+
+[merge "mergiraf"]
+    name = mergiraf
+    driver = mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L

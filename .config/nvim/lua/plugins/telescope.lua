@@ -15,6 +15,7 @@ return {
 
         require('telescope').setup{
             defaults = {
+                file_ignore_patterns = { "public/javascripts" },
                 mappings = {
                     i = {
                         ["<C-j>"] = actions.move_selection_next,
