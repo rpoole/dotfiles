@@ -37,5 +37,7 @@ return {
 
       require'lspconfig'.ts_ls.setup{}
       require'lspconfig'.eslint.setup{}
+
+      require'lspconfig'.gopls.setup{}
   end
 }
