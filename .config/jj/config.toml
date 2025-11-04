@@ -5,4 +5,9 @@ name = "Robert Poole"
 email = "rpoole@workramp.com"
 
 [ui]
-pager = ["sh", "-c", "diff-so-fancy | less -RFX"]
+editor = "nvim"
+diff-formatter = ":git"
+pager = ["delta", "--diff-so-fancy"]
+
+[revset-aliases]
+local_roots = "roots(mine() & mutable())"
