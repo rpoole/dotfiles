@@ -61,7 +61,20 @@ vim.api.nvim_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.buf.definition()<CR>
 vim.api.nvim_set_keymap('n', '<leader>n', '<cmd>lua vim.lsp.buf.references()<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>r', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>i', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.format({timeout_ms = 50000})<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>ii', '<cmd>lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>p', function()
+    vim.lsp.buf.format({ name = 'oxfmt', timeout_ms = 50000 })
+end, { desc = 'Format with oxfmt' })
+
+vim.keymap.set('n', '<leader>f', function()
+    local has_oxfmt = #vim.lsp.get_clients({ bufnr = 0, name = 'oxfmt' }) > 0
+    vim.lsp.buf.format({
+        timeout_ms = 50000,
+        filter = function(client)
+            return not has_oxfmt or client.name == 'oxfmt'
+        end,
+    })
+end, { desc = 'Format buffer (prefer oxfmt)' })
 vim.api.nvim_set_keymap('n', '<leader>g', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true, silent = true })
 
 -- Keep cursor away from edges of the screen
@@ -123,7 +136,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -- work specific config
 if vim.env.DEV_ENV_TYPE == "WORK" then
     vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "ruby", "typescriptreact" },
+        pattern = { "ruby", "typescriptreact", "typescript" },
         callback = function(args)
             local ft = args.match
 
@@ -138,8 +151,8 @@ if vim.env.DEV_ENV_TYPE == "WORK" then
 
                 local ft_cmd
                 if ft == "ruby" then
-                    ft_cmd = string.format("rspec %s --tag focus", escaped_file)
-                elseif ft == "typescriptreact" then
+                    ft_cmd = string.format("bundle exec rspec %s --tag focus", escaped_file)
+                elseif ft == "typescriptreact" or ft == "typescript" then
                     ft_cmd = string.format("npm run-script test:jest %s", escaped_file)
                 end
 

@@ -1,12 +1,12 @@
 return {
   "neovim/nvim-lspconfig",
   config = function()
-      -- requires python-lsp-server and python-lsp-ruff
-      require'lspconfig'.pylsp.setup{}
-
-      local configs = require("lspconfig.configs")
-      local util = require("lspconfig.util")
-      local enabled_features = {
+    -- ruby-lsp: stock config supplies cmd/root markers; only narrow the
+    -- feature set and keep it to plain ruby buffers.
+    vim.lsp.config("ruby_lsp", {
+      filetypes = { "ruby" },
+      init_options = {
+        enabledFeatures = {
           "definition",
           "typeDefinition",
           "documentHighlights",
@@ -18,26 +18,18 @@ return {
           "signatureHelp",
           "rename",
           "publishDiagnostics",
-      }
+        },
+      },
+    })
 
-      configs.ruby_lsp = {
-          default_config = {
-              cmd = { "ruby-lsp" },
-              filetypes = { "ruby" },
-              root_dir = util.root_pattern("Gemfile", ".git"),
-              init_options = {
-                  enabledFeatures = enabled_features,
-              },
-              settings = {},
-          },
-      }
-
-      require'lspconfig'.ruby_lsp.setup{}
-      require'lspconfig'.rubocop.setup{}
-
-      require'lspconfig'.ts_ls.setup{}
-      require'lspconfig'.eslint.setup{}
-
-      require'lspconfig'.gopls.setup{}
-  end
+    vim.lsp.enable({
+      "pylsp", -- requires python-lsp-server and python-lsp-ruff
+      "ruby_lsp",
+      "rubocop",
+      "ts_ls",
+      "eslint",
+      "oxfmt",
+      "gopls",
+    })
+  end,
 }

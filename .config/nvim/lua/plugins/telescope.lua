@@ -1,5 +1,5 @@
 return {
-    'nvim-telescope/telescope.nvim', tag = '0.1.8',
+    'nvim-telescope/telescope.nvim', tag = 'v0.2.2',
     dependencies = {
         'nvim-lua/plenary.nvim', 
         { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' },
@@ -15,7 +15,10 @@ return {
 
         require('telescope').setup{
             defaults = {
-                file_ignore_patterns = { "public/javascripts" },
+                file_ignore_patterns = {
+                    "public/javascripts",
+                    "index%.ts$",
+                },
                 mappings = {
                     i = {
                         ["<C-j>"] = actions.move_selection_next,
